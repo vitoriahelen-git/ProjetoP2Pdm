@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { StyleSheet, Text, View, Button, Image, FlatList, Pressable} from 'react-native';
+import axios from 'axios'
 
 interface Imagem{
   id: string; 
@@ -9,38 +10,23 @@ interface Imagem{
 export default function App() {
   const [listaimagens, setListaImagens] = useState<Imagem[]>([])
 
-  const teste = () => {
-    const ListaFixa: Imagem[] = [
-      {
-        id: '1', 
-        url: 'https://cdn2.thecatapi.com/images/95.gif'
-      }, 
-      {
-        id: '2', 
-        url: 'https://cdn2.thecatapi.com/images/a2.jpg'
-      }, 
-      {
-        id: '3', 
-        url: 'https://cdn2.thecatapi.com/images/59l.jpg'
-      }, 
-      {
-        id: '4', 
-        url: 'https://cdn2.thecatapi.com/images/9ed.jpg'
-      }, 
-      {
-        id: '5', 
-        url: 'https://cdn2.thecatapi.com/images/a40.jpg'
-      }
-    ]; 
+  const buscarImagem = () => {
+      axios.get('https://api.thecatapi.com/v1/images/search?limit=10')
+        .then( (res) => {
+          console.log(res)
+          setListaImagens(res.data.slice(0,5)) 
+        })
+        .catch( (err) =>
+          console.log(err)
+        )
+  
     
-    setListaImagens(ListaFixa) 
   }
   
-
   return (
     <View style={styles.container}>
-        <Pressable style={styles.botao}>
-        <Text onPress={teste}>Bottom</Text>
+        <Pressable onPress={buscarImagem} style={styles.botao}>
+        <Text>Gerar Gatos</Text>
       </Pressable>
       <FlatList
           keyExtractor={item => (item.id)}
@@ -79,33 +65,3 @@ botao: {
 });
 
 
-// {
-//   "id": "4a3",
-//   "url": "https://cdn2.thecatapi.com/images/4a3.gif",
-//   "width": 307,
-//   "height": 173
-// },
-// {
-//   "id": "4au",
-//   "url": "https://cdn2.thecatapi.com/images/4au.gif",
-//   "width": 500,
-//   "height": 281
-// },
-// {
-//   "id": "5td",
-//   "url": "https://cdn2.thecatapi.com/images/5td.gif",
-//   "width": 320,
-//   "height": 200
-// },
-// {
-//   "id": "6er",
-//   "url": "https://cdn2.thecatapi.com/images/6er.jpg",
-//   "width": 2592,
-//   "height": 1936
-// },
-// {
-//   "id": "9du",
-//   "url": "https://cdn2.thecatapi.com/images/9du.gif",
-//   "width": 400,
-//   "height": 280
-// },
